@@ -1,0 +1,24 @@
+{
+    "client": {
+        "name": "client",
+        "street": "client Street",
+        "city": "client City",
+        "state": "client State",
+        "country": "client Country",
+        "post_code": "222222"
+    },
+    "provider": {
+        "name": "PyInvoice",
+        "street": "My Street",
+        "city": "My City",
+        "state": "My State",
+        "country": "My Country",
+        "post_code": "222222",
+        "vat_tax_number": "Vat/Tax number"
+    },
+    "detail": {
+        "start_date": "15-07-2018",
+        "month_salary": 1000000
+    }
+    
+} 
