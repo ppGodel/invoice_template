@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 import smtplib
 
 
@@ -26,7 +27,10 @@ def send_pdf_mail(pass_data: Dict[str, str], receipents, pdf_path: str):
     msg["Subject"] = "Invoice"
     # add in the message body
     msg.attach(MIMEText(message, "plain"))
-    msg.attach(MIMEText(open(pdf_path).read()))
+    with open(pdf_path, "rb") as pdf:
+        attach = MIMEApplication(pdf.read(), _subtype="pdf")
+    attach.add_header('Content-Disposition', 'attachment', filename=pdf_path.split("/")[-1])
+    msg.attach(attach)
     # create server
     server = smtplib.SMTP("smtp.office365.com:587")
     server.starttls()
@@ -92,7 +96,9 @@ def create_spectrum_invoice(
 
 if __name__ == "__main__":
     pass_data = {}
-    with open("pass.json") as f:
+    with open("pass_data.json") as f:
         pass_data = json.load(f)
     pdf_path = create_spectrum_invoice()
-    send_pdf_mail(pass_data=pass_data, receipents=["test@email.com"], pdf_path=pdf_path)
+    send_pdf_mail(pass_data=pass_data,
+                  receipents=["test@email.com"],
+                  pdf_path=pdf_path)
