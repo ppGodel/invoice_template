@@ -62,4 +62,4 @@ def create_spectrum_invoice(
 
 
 if __name__ == "__main__":
-    create_spectrum_invoice(invoice_date_str="01-06-2021")
+    create_spectrum_invoice()
