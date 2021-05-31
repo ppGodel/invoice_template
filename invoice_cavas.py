@@ -23,12 +23,10 @@ def create_invoice(
     invoice_date: datetime = datetime.now(),
 ):
     invoice_date_str = invoice_date.strftime("%y%m")
-    # month_str = invoice_date.strftime("%B")
-    doc = SimpleInvoice(f"{str(invoice_dir)}invoice{invoice_date_str}.pdf")
+    doc = SimpleInvoice(f"{str(invoice_dir)}/invoice{invoice_date_str}.pdf")
     doc.invoice_info = InvoiceInfo(invoice_number, invoice_date)
     doc.service_provider_info = ServiceProviderInfo(**provider_info)
     doc.client_info = ClientInfo(**client_info)
-    # doc.add_item(Item(month_str, "", 1, ""))
     for _item in items:
         doc.add_item(_item)
     doc.set_bottom_tip("Thank you for your business.")
@@ -66,4 +64,4 @@ def create_spectrum_invoice(
 
 
 if __name__ == "__main__":
-    create_spectrum_invoice()
+    create_spectrum_invoice(invoice_dir="/Users/jhernandez/Documents/Accounting/SpectrumInvoices/")
