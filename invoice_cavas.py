@@ -11,9 +11,11 @@ from pyinvoice.models import (
 from pyinvoice.templates import SimpleInvoice
 from typing import Dict, List
 import json
+from pathlib import Path
 
 
 def create_invoice(
+    invoice_dir: Path,
     provider_info: Dict[str, str],
     client_info: Dict[str, str],
     items: List[Item] = [],
@@ -22,7 +24,7 @@ def create_invoice(
 ):
     invoice_date_str = invoice_date.strftime("%y%m")
     # month_str = invoice_date.strftime("%B")
-    doc = SimpleInvoice(f"invoice{invoice_date_str}.pdf")
+    doc = SimpleInvoice(f"{str(invoice_dir)}invoice{invoice_date_str}.pdf")
     doc.invoice_info = InvoiceInfo(invoice_number, invoice_date)
     doc.service_provider_info = ServiceProviderInfo(**provider_info)
     doc.client_info = ClientInfo(**client_info)
@@ -39,6 +41,7 @@ def month_diff(start_date: datetime, end_date: datetime):
 
 def create_spectrum_invoice(
     config_path: str = "./data.json",
+    invoice_dir="./",
     invoice_date_str: str = datetime.now().strftime("%d-%m-%Y"),
 ):
     with open(config_path) as f:
@@ -53,6 +56,7 @@ def create_spectrum_invoice(
     invoice_number = month_diff(start_date, invoice_date)
     items = [Item(billed_month.strftime("%B"), "", 1, month_salary)]
     create_invoice(
+        Path(invoice_dir),
         provider_info=provider_info,
         client_info=client_info,
         items=items,
